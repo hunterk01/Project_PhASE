@@ -19,7 +19,14 @@ public class LaserController : MonoBehaviour
     public float massMin = 1;
     public float massMax = 30;
     public Vector3 tractorForce = new Vector3(1,1,1);
-    
+    public Light light;
+    float distance;
+    Transform jointedObject;
+    FixedJoint jointedJoint;
+    SpringJoint springyJoint;
+    public float jointBreakForce = 1;
+    public float springForce = 1;
+    //public Rigidbody player;
     // Use this for initialization
     void Start()
     {
@@ -28,6 +35,8 @@ public class LaserController : MonoBehaviour
         renderer = gameObject.GetComponent<Renderer>();
         gameObject.GetComponent<Light>().enabled = false;
         ps = gameObject.GetComponent<ParticleSystem>();
+        light = gameObject.GetComponent<Light>();
+        //player = gameObject.GetComponent<Rigidbody>();
         em = ps.emission;
         em.enabled = false;
 
@@ -45,7 +54,7 @@ public class LaserController : MonoBehaviour
         switch (gun)
         {
             case 5:
-                FreezeBeam();
+                GrappleBeam();
                 ;
                 break;
             case 4:
@@ -90,10 +99,15 @@ public class LaserController : MonoBehaviour
 
 
         line.SetPosition(0, ray.origin);
+        
 
         if (Physics.Raycast(ray, out hit, laserMaxDistance))
         {
             line.SetPosition(1, hit.point);
+            distance = (hit.point - ray.origin).magnitude;
+            ps.startLifetime = distance;
+            ps.startColor = Color.green;
+            light.color = Color.green;
             if (hit.rigidbody)
             {
                 if (Input.GetButton("Fire1"))
@@ -132,6 +146,10 @@ public class LaserController : MonoBehaviour
             Vector3 scaleGovMin = new Vector3(scaleMin, scaleMin, scaleMin);
 
             line.SetPosition(1, hit.point);
+            distance = (hit.point - ray.origin).magnitude;
+            ps.startLifetime = distance;
+            ps.startColor = Color.red;
+            light.color = Color.red;
             if (hit.rigidbody)
             {
                 if (Input.GetButton("Fire1"))
@@ -173,11 +191,17 @@ public class LaserController : MonoBehaviour
 
 
         line.SetPosition(0, ray.origin);
+       
 
         if (Physics.Raycast(ray, out hit, laserMaxDistance))
         {
             Rigidbody rb = hit.rigidbody;
             line.SetPosition(1, hit.point);
+            distance = (hit.point - ray.origin).magnitude;
+            ps.startLifetime = distance;
+            ps.startColor = Color.yellow;
+            light.color = Color.yellow;
+
             if (hit.rigidbody)
             {
                 if (Input.GetButton("Fire1"))
@@ -214,38 +238,44 @@ public class LaserController : MonoBehaviour
 
 
         line.SetPosition(0, ray.origin);
+        
 
+        // attempt to pickup
         if (Physics.Raycast(ray, out hit, laserMaxDistance))
         {
             line.SetPosition(1, hit.point);
-            if (hit.rigidbody)
+            distance = (hit.point - ray.origin).magnitude;
+            ps.startLifetime = distance / 5;
+            ps.startColor = Color.blue;
+            light.color = Color.blue;
+
+            if (hit.rigidbody && !jointedObject)
             {
                 Vector3 lastHit = hit.point;
 
-                if (Input.GetButton("Fire1"))
-                    {
-                        
-                        Vector3 distance = hit.point - ray.origin;
+                if (Input.GetButton("Fire1") || Input.GetButton("Fire2"))
+                {
 
-                        //hit.transform.position = lastHit(hit.point - ray.origin);
-                        //hit.rigidbody.AddForce(Vector3.Dot(tractorForce, distance) - (distance);
-                        //hit.rigidbody.AddForceAtPosition(transform.forward * kineticForce, hit.point);
-                    }
-                    else if (Input.GetButton("Fire2"))
-                    {
-                        hit.transform.position = lastHit - (hit.point - ray.origin);
-                        //hit.rigidbody.AddForceAtPosition(-transform.forward * 10, hit.point);
-                    }
+                    distance = (hit.point - ray.origin).magnitude;
+
+                    jointedObject = hit.collider.gameObject.transform;
+                    jointedJoint = jointedObject.gameObject.AddComponent<FixedJoint>();                  
+                    jointedJoint.connectedBody = GetComponent<Rigidbody>();
+                    jointedJoint.autoConfigureConnectedAnchor = true;
+                    jointedJoint.breakForce = jointBreakForce;
                 }
-            
+                                  
+            }
         }
         else
         {
             line.SetPosition(1, ray.GetPoint(laserMaxDistance));
+
         }
+
     }
 
-    void FreezeBeam()
+    void GrappleBeam()
     {
         renderer.material.mainTextureOffset = new Vector2(0, Time.time);
 
@@ -254,22 +284,26 @@ public class LaserController : MonoBehaviour
 
 
         line.SetPosition(0, ray.origin);
+   
 
         if (Physics.Raycast(ray, out hit, laserMaxDistance))
         {
             Rigidbody rb = hit.rigidbody;
             line.SetPosition(1, hit.point);
+            distance = (hit.point - ray.origin).magnitude;
+            ps.startLifetime = distance / 2;
+
             if (hit.rigidbody)
             {
                 if (Input.GetButton("Fire1"))
                 {
-                    rb.AddRelativeTorque(Vector3.up * 0);
-                    hit.rigidbody.AddForceAtPosition(transform.forward * 0, hit.point);
+
+                     //player.AddForce(transform.forward * kineticForce, ForceMode.Acceleration);
+                    
                 }
                 else if (Input.GetButton("Fire2"))
                 {
-                    rb.AddTorque(-transform.up * 0);
-                    hit.rigidbody.AddForceAtPosition(-transform.forward * 0, hit.point);
+                   
                 }
 
             }
@@ -287,6 +321,7 @@ public class LaserController : MonoBehaviour
             line.enabled = true;
             gameObject.GetComponent<Light>().enabled = true;
             em.enabled = true;
+           
             FireGun();
         }
         else
@@ -294,6 +329,18 @@ public class LaserController : MonoBehaviour
             line.enabled = false;
             gameObject.GetComponent<Light>().enabled = false;
             em.enabled = false;
+            ps.Clear();
+
+            if(jointedObject)
+            {
+                
+                Destroy(jointedObject.gameObject.GetComponent<FixedJoint>());
+                Destroy(gameObject.GetComponent<FixedJoint>());
+                Destroy(jointedObject.gameObject.GetComponent<SpringJoint>());
+                Destroy(gameObject.GetComponent<SpringJoint>());
+
+                jointedObject = null;
+            }
         }
 
     }

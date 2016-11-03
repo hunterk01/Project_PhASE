@@ -60,11 +60,12 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 438300}
-  - 114: {fileID: 11410154}
   - 120: {fileID: 12033972}
   - 108: {fileID: 10868794}
   - 198: {fileID: 19868066}
   - 199: {fileID: 19977694}
+  - 114: {fileID: 11405630}
+  - 54: {fileID: 5466740}
   m_Layer: 8
   m_Name: LaserTip
   m_TagString: Untagged
@@ -132,8 +133,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132164}
-  m_LocalRotation: {x: 0, y: -1, z: 0, w: -0.00000016292068}
-  m_LocalPosition: {x: 3.9, y: 1.9, z: 12.91}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.46, y: 1.9, z: -81.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 447422}
@@ -228,7 +229,7 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 104088}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: 793e592c49e039540b343fa9b69f8605, type: 2}
@@ -260,6 +261,21 @@ Rigidbody:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132164}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!54 &5466740
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 178368}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -360,7 +376,7 @@ Light:
   serializedVersion: 6
   m_Type: 2
   m_Color: {r: 0, g: 0.006896496, b: 1, a: 1}
-  m_Intensity: 8
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -383,7 +399,7 @@ Light:
   m_ShadowRadius: 0
   m_ShadowAngle: 0
   m_AreaSize: {x: 1, y: 1}
---- !u!114 &11410154
+--- !u!114 &11405630
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -391,20 +407,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 178368}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1da7b17df47db7a448bf241e4b901ad8, type: 3}
+  m_Script: {fileID: 11500000, guid: b3a3443d449030145a4fe357fd244007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   kineticForce: 10
   torqueForce: 10
-  laserMaxDistance: 1000
+  laserMaxDistance: 100
   gun: 1
-  mass: 0.03
-  scale: 0.003
+  mass: 0.01
+  scale: 0.005
   scaleMin: 0.5
   scaleMax: 3.5
   massMin: 1
   massMax: 30
   tractorForce: {x: 1, y: 1, z: 1}
+  jointBreakForce: 100
 --- !u!114 &11419626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -510,7 +527,7 @@ LineRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 8bed3f14320906a4fb46c8904de0ac83, type: 2}
+  - {fileID: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
