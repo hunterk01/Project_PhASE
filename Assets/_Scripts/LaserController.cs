@@ -26,7 +26,9 @@ public class LaserController : MonoBehaviour
     SpringJoint springyJoint;
     public float jointBreakForce = 1;
     public float springForce = 1;
+    ObjectParameters objectParameters;
     //public Rigidbody player;
+
     // Use this for initialization
     void Start()
     {
@@ -36,6 +38,7 @@ public class LaserController : MonoBehaviour
         gameObject.GetComponent<Light>().enabled = false;
         ps = gameObject.GetComponent<ParticleSystem>();
         light = gameObject.GetComponent<Light>();
+        
         //player = gameObject.GetComponent<Rigidbody>();
         em = ps.emission;
         em.enabled = false;
@@ -108,7 +111,10 @@ public class LaserController : MonoBehaviour
             ps.startLifetime = distance;
             ps.startColor = Color.green;
             light.color = Color.green;
-            if (hit.rigidbody)
+
+            objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
+         
+            if (hit.rigidbody && objectParameters.canKinetic)
             {
                 if (Input.GetButton("Fire1"))
                 {
@@ -139,27 +145,34 @@ public class LaserController : MonoBehaviour
 
 
         line.SetPosition(0, ray.origin);
-
+        
         if (Physics.Raycast(ray, out hit, laserMaxDistance))
         {
-            Vector3 scaleGovMax = new Vector3(scaleMax, scaleMax, scaleMax);
-            Vector3 scaleGovMin = new Vector3(scaleMin, scaleMin, scaleMin);
+            ObjectParameters OPScale;
+
+            OPScale = hit.transform.GetComponent<ObjectParameters>();
+
+            Vector3 scaleGovMax = new Vector3(OPScale.maxScale, OPScale.maxScale, OPScale.maxScale);
+            Vector3 scaleGovMin = new Vector3(OPScale.minScale, OPScale.minScale, OPScale.minScale);
 
             line.SetPosition(1, hit.point);
             distance = (hit.point - ray.origin).magnitude;
             ps.startLifetime = distance;
             ps.startColor = Color.red;
             light.color = Color.red;
-            if (hit.rigidbody)
+
+            objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
+
+            if (hit.rigidbody && objectParameters.canMass)
             {
                 if (Input.GetButton("Fire1"))
                 {
                     hit.rigidbody.mass += mass;
                     hit.transform.localScale += new Vector3(scale, scale, scale);
-                    if (hit.rigidbody.mass > massMax)
-                        hit.rigidbody.mass = massMax;
+                    if (hit.rigidbody.mass > objectParameters.maxMass)
+                        hit.rigidbody.mass = objectParameters.maxMass;
 
-                    if (hit.transform.localScale.y > scaleMax)
+                    if (hit.transform.localScale.y > objectParameters.maxScale)
                         hit.transform.localScale = scaleGovMax;
                 }
                 else if (Input.GetButton("Fire2"))
@@ -167,10 +180,10 @@ public class LaserController : MonoBehaviour
                    hit.rigidbody.mass -= mass;
                    hit.transform.localScale -= new Vector3(scale, scale, scale);
 
-                    if (hit.rigidbody.mass < massMin)
-                        hit.rigidbody.mass = massMin;
+                    if (hit.rigidbody.mass < objectParameters.minMass)
+                        hit.rigidbody.mass = objectParameters.minMass;
 
-                    if (hit.transform.localScale.y < scaleMin)
+                    if (hit.transform.localScale.y < objectParameters.minScale)
                     hit.transform.localScale = scaleGovMin;
                 }
 
@@ -202,7 +215,9 @@ public class LaserController : MonoBehaviour
             ps.startColor = Color.yellow;
             light.color = Color.yellow;
 
-            if (hit.rigidbody)
+            objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
+
+            if (hit.rigidbody && objectParameters.canTorque)
             {
                 if (Input.GetButton("Fire1"))
                 {
@@ -249,7 +264,9 @@ public class LaserController : MonoBehaviour
             ps.startColor = Color.blue;
             light.color = Color.blue;
 
-            if (hit.rigidbody && !jointedObject)
+            objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
+
+            if (hit.rigidbody && !jointedObject && objectParameters.canGravity)
             {
                 Vector3 lastHit = hit.point;
 
