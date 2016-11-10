@@ -13,8 +13,10 @@ public class ObjectHandler : MonoBehaviour
     public float minScale = 0.5f;
     public float maxScale = 5;
 
-    Vector3 vMinMass, vMaxMass;
-    Vector3 vMinScale, vMaxScale;
+    Vector3 vMinMass, vMaxMass, vCurrentMass;
+    Vector3 vMinScale, vMaxScale, vCurrentScale;
+
+    private float objectChangePercentage;
 
     void Start()
     {
@@ -22,15 +24,16 @@ public class ObjectHandler : MonoBehaviour
         vMaxMass = new Vector3(maxMass, maxMass, maxMass);
         vMinScale = new Vector3(minScale, minScale, minScale);
         vMaxScale = new Vector3(maxScale, maxScale, maxScale);
+
+        vCurrentScale = transform.localScale;
+
+        // Calculate the change percentage of scale and apply it to mass
+
     }
 
-    void Update()
+    public void UpdateMass(float _percentage)
     {
-
-    }
-
-    void UpdateMass()
-    {
+        // Apply percentage change to scale and mass
 
     }
 }
