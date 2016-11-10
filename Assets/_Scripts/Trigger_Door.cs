@@ -37,6 +37,7 @@ public class Trigger_Door : MonoBehaviour
     void OnTriggerEnter()
     {
         gateOn = true;
+        gameObject.GetComponent<Collider>().enabled = false;
     }
 
     void RaiseDoor()
