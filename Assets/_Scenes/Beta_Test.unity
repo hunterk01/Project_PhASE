@@ -693,6 +693,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &15573752
 GameObject:
   m_ObjectHideFlags: 0
@@ -3437,6 +3439,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &50224575
 GameObject:
   m_ObjectHideFlags: 0
@@ -3979,6 +3983,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &73489346
 GameObject:
   m_ObjectHideFlags: 0
@@ -4421,6 +4427,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &91421397
 GameObject:
   m_ObjectHideFlags: 0
@@ -7037,6 +7045,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &120505819
 GameObject:
   m_ObjectHideFlags: 0
@@ -7148,6 +7158,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!43 &124183963
 Mesh:
   m_ObjectHideFlags: 0
@@ -22098,6 +22110,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &261210421
 GameObject:
   m_ObjectHideFlags: 0
@@ -27957,6 +27971,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &328408039
 GameObject:
   m_ObjectHideFlags: 0
@@ -32946,6 +32962,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!43 &483059064
 Mesh:
   m_ObjectHideFlags: 0
@@ -33609,6 +33627,46 @@ Prefab:
     - target: {fileID: 443966, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
       propertyPath: m_RootOrder
       value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 11490984, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
+      propertyPath: canMass
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11490984, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
+      propertyPath: canGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11490984, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
+      propertyPath: canTorque
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11490984, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
+      propertyPath: minMass
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11490984, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
+      propertyPath: maxScale
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11490984, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
+      propertyPath: maxMass
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 122886, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
+      propertyPath: m_TagString
+      value: Shootable
+      objectReference: {fileID: 0}
+    - target: {fileID: 443966, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 443966, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 443966, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
@@ -36967,6 +37025,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!43 &593557425
 Mesh:
   m_ObjectHideFlags: 0
@@ -37206,6 +37266,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &653411997
 GameObject:
   m_ObjectHideFlags: 0
@@ -39749,6 +39811,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1001 &856098214
 Prefab:
   m_ObjectHideFlags: 0
@@ -44022,6 +44086,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &988536174
 GameObject:
   m_ObjectHideFlags: 0
@@ -45240,6 +45306,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &1005429613
 GameObject:
   m_ObjectHideFlags: 0
@@ -47102,6 +47170,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &1102340507
 GameObject:
   m_ObjectHideFlags: 0
@@ -48853,6 +48923,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &1152333533
 GameObject:
   m_ObjectHideFlags: 0
@@ -48964,6 +49036,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &1172771578
 GameObject:
   m_ObjectHideFlags: 0
@@ -49075,6 +49149,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!43 &1176045117
 Mesh:
   m_ObjectHideFlags: 0
@@ -49341,6 +49417,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &1210981408
 GameObject:
   m_ObjectHideFlags: 0
@@ -50150,6 +50228,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!43 &1289568569
 Mesh:
   m_ObjectHideFlags: 0
@@ -62115,6 +62195,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &1524657546
 GameObject:
   m_ObjectHideFlags: 0
@@ -64731,12 +64813,14 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!43 &1532266992
 Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh11252
+  m_Name: pb_Mesh22028
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -64970,6 +65054,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &1552987070
 GameObject:
   m_ObjectHideFlags: 0
@@ -66393,6 +66479,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &1568423710
 GameObject:
   m_ObjectHideFlags: 0
@@ -67325,6 +67413,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!43 &1636210682
 Mesh:
   m_ObjectHideFlags: 0
@@ -73829,6 +73919,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &1778350072
 GameObject:
   m_ObjectHideFlags: 0
@@ -73940,6 +74032,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!43 &1800403427
 Mesh:
   m_ObjectHideFlags: 0
@@ -74254,6 +74348,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!1 &1822962123
 GameObject:
   m_ObjectHideFlags: 0
@@ -78184,6 +78280,8 @@ MonoBehaviour:
   maxMass: 12
   minScale: 0.5
   maxScale: 5
+  currentMassPercentage: 0
+  currentScalePercentage: 0
 --- !u!43 &1910979579
 Mesh:
   m_ObjectHideFlags: 0
