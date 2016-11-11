@@ -20,6 +20,10 @@ public class LaserController : MonoBehaviour
     public float massMin = 1;
     public float massMax = 30;    
     public Vector3 tractorForce = new Vector3(1,1,1);
+    public bool kineticActive = true;
+    public bool massActive = false;
+    public bool torqueActive = false;
+    public bool gravityActive = false;
 
     public Light light;
     float distance;
@@ -40,7 +44,7 @@ public class LaserController : MonoBehaviour
         gameObject.GetComponent<Light>().enabled = false;
         ps = gameObject.GetComponent<ParticleSystem>();
         light = gameObject.GetComponent<Light>();
-        infoPanelControl = GetComponent<InfoPanelControl>();
+        infoPanelControl = GameObject.Find("InfoPanel").GetComponent<InfoPanelControl>();
         
         em = ps.emission;
         em.enabled = false;
@@ -58,53 +62,50 @@ public class LaserController : MonoBehaviour
     {
         switch (gun)
         {
-            case 5:
-                GrappleBeam();
-                ;
+            //case 5:
+                //GrappleBeam();
+                //;
+                //break;
+            case 4:               
+                    GravityBeam();                              
                 break;
-            case 4:
-                //if (infoPanelControl.enableGravity == true)
-                //{
-                    GravityBeam();
-                //}
-                
+            case 3:              
+                    TorqueBeam();                    
                 break;
-            case 3:
-               // if (infoPanelControl.enableTorque == true)
-               // {
-                    TorqueBeam();
-               // }
-                
+            case 2:               
+                    MassBeam();                          
                 break;
-            case 2:
-                //if (infoPanelControl.enableMass == true)
-                //{
-                    MassBeam();
-               // }
-                
+            case 1:            
+                    KineticBeam();                
                 break;
-            case 1:
-                //if (infoPanelControl.enableKinetic == true)
-                //{
-                    KineticBeam();
-                //}
-                break;
-
         }
     }
 
     void GunSelection()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            gun = 1;
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            gun = 2;
-        else if(Input.GetKeyDown(KeyCode.Alpha3))
-            gun = 3;
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-            gun = 4;
-        else if(Input.GetKeyDown(KeyCode.Alpha5))
-            gun = 5;
+        if (Input.GetKeyDown(KeyCode.Alpha1) && kineticActive == true)
+        {        
+                gun = 1;
+        }
+
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && massActive == true)
+        {
+            
+                gun = 2;
+        }
+
+        else if (Input.GetKeyDown(KeyCode.Alpha3) && torqueActive == true)
+        {           
+                gun = 3;
+        }
+
+        else if (Input.GetKeyDown(KeyCode.Alpha4) && gravityActive == true)
+        {
+                gun = 4;
+        }
+
+       // else if (Input.GetKeyDown(KeyCode.Alpha5))
+            //gun = 5;
     }
 
     void KineticBeam()
@@ -321,44 +322,44 @@ public class LaserController : MonoBehaviour
 
     }
 
-    void GrappleBeam()
-    {
-        renderer.material.mainTextureOffset = new Vector2(0, Time.time);
+    //void GrappleBeam()
+    //{
+    //    renderer.material.mainTextureOffset = new Vector2(0, Time.time);
 
-        Ray ray = new Ray(transform.position, transform.forward);
-        RaycastHit hit;
+    //    Ray ray = new Ray(transform.position, transform.forward);
+    //    RaycastHit hit;
 
 
-        line.SetPosition(0, ray.origin);
+    //    line.SetPosition(0, ray.origin);
    
 
-        if (Physics.Raycast(ray, out hit, laserMaxDistance))
-        {
-            Rigidbody rb = hit.rigidbody;
-            line.SetPosition(1, hit.point);
-            distance = (hit.point - ray.origin).magnitude;
-            ps.startLifetime = distance / 2;
+    //    if (Physics.Raycast(ray, out hit, laserMaxDistance))
+    //    {
+    //        Rigidbody rb = hit.rigidbody;
+    //        line.SetPosition(1, hit.point);
+    //        distance = (hit.point - ray.origin).magnitude;
+    //        ps.startLifetime = distance / 2;
 
-            if (hit.rigidbody)
-            {
-                if (Input.GetButton("Fire1"))
-                {
+    //        if (hit.rigidbody)
+    //        {
+    //            if (Input.GetButton("Fire1"))
+    //            {
 
-                     //player.AddForce(transform.forward * kineticForce, ForceMode.Acceleration);
+    //                 //player.AddForce(transform.forward * kineticForce, ForceMode.Acceleration);
                     
-                }
-                else if (Input.GetButton("Fire2"))
-                {
+    //            }
+    //            else if (Input.GetButton("Fire2"))
+    //            {
                    
-                }
+    //            }
 
-            }
-        }
-        else
-        {
-            line.SetPosition(1, ray.GetPoint(laserMaxDistance));
-        }
-    }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        line.SetPosition(1, ray.GetPoint(laserMaxDistance));
+    //    }
+    //}
 
     void FireLaser()
     {
