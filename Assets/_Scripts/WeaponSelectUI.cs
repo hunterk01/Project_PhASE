@@ -4,10 +4,15 @@ using System.Collections;
 
 public class WeaponSelectUI : MonoBehaviour
 {
-    public Text kineticText;
-    public Text massText;
-    public Text torqueText;
-    public Text gravityText;
+    Text kineticText;
+    Text massText;
+    Text torqueText;
+    Text gravityText;
+
+    public GameObject kineticUI;
+    public GameObject massUI;
+    public GameObject torqueUI;
+    public GameObject gravityUI;
 
     public bool kineticEnabled = true;
     public bool massEnabled = false;
@@ -21,6 +26,11 @@ public class WeaponSelectUI : MonoBehaviour
 
     void Start()
     {
+        kineticText = kineticUI.GetComponentInChildren<Text>();
+        massText = massUI.GetComponentInChildren<Text>();
+        torqueText = torqueUI.GetComponentInChildren<Text>();
+        gravityText = gravityUI.GetComponentInChildren<Text>();
+
         kineticText.color = enabledColor;
         massText.color = disabledColor;
         torqueText.color = disabledColor;
@@ -30,6 +40,7 @@ public class WeaponSelectUI : MonoBehaviour
     void Update()
     {
         SelectWeapon();
+        EnableWeapon();
     }
 
     void SelectWeapon()
@@ -86,5 +97,28 @@ public class WeaponSelectUI : MonoBehaviour
             torqueText.color = disabledColor;
             gravityText.color = enabledColor;
         }
+    }
+
+    void EnableWeapon()
+    {
+        if (kineticEnabled)
+            kineticUI.SetActive(true);
+        else
+            kineticUI.SetActive(false);
+
+        if (massEnabled)
+            massUI.SetActive(true);
+        else
+            massUI.SetActive(false);
+
+        if (torqueEnabled)
+            torqueUI.SetActive(true);
+        else
+            torqueUI.SetActive(false);
+
+        if (gravityEnabled)
+            gravityUI.SetActive(true);
+        else
+            gravityUI.SetActive(false);
     }
 }
