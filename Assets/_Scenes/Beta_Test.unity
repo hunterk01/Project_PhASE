@@ -14696,7 +14696,9 @@ MonoBehaviour:
   door: {fileID: 73489347}
   doorOffset: 3
   doorTotalTime: 4
+  isVertical: 1
   moveUp: 1
+  moveRight: 0
   doorStartPosition: {x: 0, y: 0, z: 0}
   doorUpPosition: {x: 0, y: 0, z: 0}
   doorDownPosition: {x: 0, y: 0, z: 0}
@@ -42802,7 +42804,9 @@ MonoBehaviour:
   door: {fileID: 1859746506}
   doorOffset: 3
   doorTotalTime: 2.5
+  isVertical: 1
   moveUp: 0
+  moveRight: 0
   doorStartPosition: {x: 0, y: 0, z: 0}
   doorUpPosition: {x: 0, y: 0, z: 0}
   doorDownPosition: {x: 0, y: 0, z: 0}
@@ -55947,7 +55951,9 @@ MonoBehaviour:
   door: {fileID: 1954946372}
   doorOffset: 3
   doorTotalTime: 4
+  isVertical: 1
   moveUp: 1
+  moveRight: 0
   doorStartPosition: {x: 0, y: 0, z: 0}
   doorUpPosition: {x: 0, y: 0, z: 0}
   doorDownPosition: {x: 0, y: 0, z: 0}

@@ -11,22 +11,25 @@ public class InfoPanelControl : MonoBehaviour
     public GameObject weaponPanel;
     public Text infoPanelText;
 
+    public bool enableKinetic = true;
     public bool enableMass = false;
     public bool enableTorque = false;
     public bool enableGravity = false;
-    public bool enableKinetic = true;
-
+    
     private int dialogCount = 0;
     private bool isTriggered = false;
     private bool infoCompleted = false;
 
     WeaponSelectUI weaponUI;
+    LaserController laserController;
     	
     void Start()
     {
         infoPanel.SetActive(false);
 
         weaponUI = weaponPanel.GetComponent<WeaponSelectUI>();
+
+        laserController = GetComponent<LaserController>();
     }
 
 	void Update ()
@@ -41,6 +44,7 @@ public class InfoPanelControl : MonoBehaviour
         gameObject.GetComponent<Collider>().enabled = false;
 
         EnableBeams();
+        LaserEnabler();
     }
 
     void DisplayInfo()
@@ -71,5 +75,25 @@ public class InfoPanelControl : MonoBehaviour
             weaponPanel.GetComponent<WeaponSelectUI>().massEnabled = true;
         if (enableTorque)   weaponUI.torqueEnabled = true;
         if (enableGravity)  weaponUI.gravityEnabled = true;
+    }
+
+   void LaserEnabler()
+    {
+        if (enableKinetic == true)
+            {
+            laserController.kineticActive = true;
+            }
+        if (enableMass == true)
+            {
+            laserController.massActive = true;
+            }
+        if (enableTorque == true)
+            {
+            laserController.torqueActive = true;
+            }
+        if (enableGravity == true)
+            {
+            laserController.gravityActive = true;
+            }
     }
 }
