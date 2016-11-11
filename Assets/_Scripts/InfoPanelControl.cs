@@ -14,6 +14,7 @@ public class InfoPanelControl : MonoBehaviour
     public bool enableMass = false;
     public bool enableTorque = false;
     public bool enableGravity = false;
+    public bool enableKinetic = true;
 
     private int dialogCount = 0;
     private bool isTriggered = false;

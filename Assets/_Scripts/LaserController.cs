@@ -11,14 +11,16 @@ public class LaserController : MonoBehaviour
     Renderer renderer;
     ParticleSystem ps;
     ParticleSystem.EmissionModule em;
+
     public int gun = 1;
     public float mass = 0.01f;
-    public float scale = 0.005f;
+    public float scale;
     public float scaleMin = 0.5f;
     public float scaleMax = 3.5f;
     public float massMin = 1;
-    public float massMax = 30;
+    public float massMax = 30;    
     public Vector3 tractorForce = new Vector3(1,1,1);
+
     public Light light;
     float distance;
     Transform jointedObject;
@@ -27,7 +29,7 @@ public class LaserController : MonoBehaviour
     public float jointBreakForce = 1;
     public float springForce = 1;
     ObjectParameters objectParameters;
-    //public Rigidbody player;
+    InfoPanelControl infoPanelControl;
 
     // Use this for initialization
     void Start()
@@ -38,8 +40,8 @@ public class LaserController : MonoBehaviour
         gameObject.GetComponent<Light>().enabled = false;
         ps = gameObject.GetComponent<ParticleSystem>();
         light = gameObject.GetComponent<Light>();
+        infoPanelControl = GetComponent<InfoPanelControl>();
         
-        //player = gameObject.GetComponent<Rigidbody>();
         em = ps.emission;
         em.enabled = false;
 
@@ -61,19 +63,31 @@ public class LaserController : MonoBehaviour
                 ;
                 break;
             case 4:
-                GravityBeam();
-                ;
+                //if (infoPanelControl.enableGravity == true)
+                //{
+                    GravityBeam();
+                //}
+                
                 break;
             case 3:
-                TorqueBeam();
-                ;
+               // if (infoPanelControl.enableTorque == true)
+               // {
+                    TorqueBeam();
+               // }
+                
                 break;
             case 2:
-                MassBeam();
-                ;
+                //if (infoPanelControl.enableMass == true)
+                //{
+                    MassBeam();
+               // }
+                
                 break;
             case 1:
-                KineticBeam();
+                //if (infoPanelControl.enableKinetic == true)
+                //{
+                    KineticBeam();
+                //}
                 break;
 
         }
@@ -142,52 +156,67 @@ public class LaserController : MonoBehaviour
 
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
-
+        
 
         line.SetPosition(0, ray.origin);
         
         if (Physics.Raycast(ray, out hit, laserMaxDistance))
         {
-            ObjectParameters OPScale;
-
-            OPScale = hit.transform.GetComponent<ObjectParameters>();
-
-            Vector3 scaleGovMax = new Vector3(OPScale.maxScale, OPScale.maxScale, OPScale.maxScale);
-            Vector3 scaleGovMin = new Vector3(OPScale.minScale, OPScale.minScale, OPScale.minScale);
-
+           
             line.SetPosition(1, hit.point);
             distance = (hit.point - ray.origin).magnitude;
             ps.startLifetime = distance;
             ps.startColor = Color.red;
             light.color = Color.red;
 
-            objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
-
+            if (hit.transform.tag == "Shootable")
+            {
+                objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
+                objectParameters.currentScalePercentage = (hit.transform.localScale.y / objectParameters.maxScale) * 100;
+            }
             if (hit.rigidbody && objectParameters.canMass)
             {
+                
                 if (Input.GetButton("Fire1"))
                 {
-                    hit.rigidbody.mass += mass;
-                    hit.transform.localScale += new Vector3(scale, scale, scale);
-                    if (hit.rigidbody.mass > objectParameters.maxMass)
+
+                    objectParameters.currentScalePercentage = objectParameters.currentScalePercentage + 0.2f;
+                        scale = (objectParameters.currentScalePercentage / 100) * objectParameters.maxScale;
+                        objectParameters.currentMassPercentage = objectParameters.currentScalePercentage;
+
+                        hit.transform.localScale = new Vector3(scale, scale, scale);
+                      
+                        hit.rigidbody.mass = (objectParameters.currentMassPercentage / 100) * objectParameters.maxMass;
+
+                    if (hit.transform.localScale.y >= objectParameters.maxScale)
+                    {
+                        objectParameters.currentScalePercentage = 100;
                         hit.rigidbody.mass = objectParameters.maxMass;
-
-                    if (hit.transform.localScale.y > objectParameters.maxScale)
-                        hit.transform.localScale = scaleGovMax;
+                        scale = objectParameters.maxScale;
+                        hit.transform.localScale = new Vector3(scale, scale, scale);
+                    }
                 }
-                else if (Input.GetButton("Fire2"))
-                {
-                   hit.rigidbody.mass -= mass;
-                   hit.transform.localScale -= new Vector3(scale, scale, scale);
+                   
+                            else if (Input.GetButton("Fire2"))
+                {                
+                        objectParameters.currentScalePercentage = objectParameters.currentScalePercentage - 0.2f;
+                        scale = (objectParameters.currentScalePercentage / 100) * objectParameters.maxScale;
+                        objectParameters.currentMassPercentage = objectParameters.currentScalePercentage;
+                     
+                        hit.transform.localScale = new Vector3(scale, scale, scale);
+                     
+                        hit.rigidbody.mass = (objectParameters.currentMassPercentage / 100) * objectParameters.maxMass;
 
-                    if (hit.rigidbody.mass < objectParameters.minMass)
+                    if (hit.transform.localScale.y <= objectParameters.minScale)
+                    {
+                        objectParameters.currentScalePercentage = (objectParameters.minScale / objectParameters.maxScale) * 100;
+                        scale = objectParameters.minScale;
+                        hit.transform.localScale = new Vector3(scale, scale, scale);
                         hit.rigidbody.mass = objectParameters.minMass;
-
-                    if (hit.transform.localScale.y < objectParameters.minScale)
-                    hit.transform.localScale = scaleGovMin;
-                }
-
-            }
+                    }
+                }             
+        }
+            
         }
         else
         {
