@@ -93,7 +93,7 @@ public class Trigger_Door : MonoBehaviour
         doorElapsedTime += Time.deltaTime;
         door.localPosition = Vector3.Lerp(doorStartPosition, doorUpPosition, doorElapsedTime / doorTotalTime);
 
-        if (door.localPosition.z >= doorUpPosition.z)
+        if (door.localPosition.x >= doorUpPosition.x)
         {
             gateRaised = true;
             door.localPosition = doorUpPosition;
