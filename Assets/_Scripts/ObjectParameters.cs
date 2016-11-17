@@ -9,10 +9,10 @@ public class ObjectParameters : MonoBehaviour
     public bool canTorque = false;
     public bool canGravity = false;
 
-    public float minMass = 1;
-    public float maxMass = 12;
-    public float minScale = 0.5f;
-    public float maxScale = 5;
+    public float minMass;
+    public float maxMass;
+    public float minScale;
+    public float maxScale;
     private Rigidbody rb;
 
     [HideInInspector]

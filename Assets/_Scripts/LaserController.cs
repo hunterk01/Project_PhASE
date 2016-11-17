@@ -33,7 +33,7 @@ public class LaserController : MonoBehaviour
     public float jointBreakForce = 1;
     public float springForce = 1;
     ObjectParameters objectParameters;
-    InfoPanelControl infoPanelControl;
+    public WeaponSelectUI weaponSelectUI;
 
     // Use this for initialization
     void Start()
@@ -44,7 +44,7 @@ public class LaserController : MonoBehaviour
         gameObject.GetComponent<Light>().enabled = false;
         ps = gameObject.GetComponent<ParticleSystem>();
         light = gameObject.GetComponent<Light>();
-        infoPanelControl = GameObject.Find("InfoPanel").GetComponent<InfoPanelControl>();
+        weaponSelectUI = GameObject.FindWithTag("GunController").GetComponent<WeaponSelectUI>();
         
         em = ps.emission;
         em.enabled = false;
@@ -56,6 +56,7 @@ public class LaserController : MonoBehaviour
     {
         FireLaser();
         GunSelection();
+        LaserEnabler();
     }
 
     void FireGun()
@@ -129,7 +130,7 @@ public class LaserController : MonoBehaviour
 
             objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
          
-            if (hit.rigidbody && objectParameters.canKinetic)
+            if (hit.rigidbody && objectParameters.canKinetic == true)
             {
                 if (Input.GetButton("Fire1"))
                 {
@@ -175,7 +176,7 @@ public class LaserController : MonoBehaviour
                 objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
                 objectParameters.currentScalePercentage = (hit.transform.localScale.y / objectParameters.maxScale) * 100;
             }
-            if (hit.rigidbody && objectParameters.canMass)
+            if (hit.rigidbody && objectParameters.canMass == true)
             {
                 
                 if (Input.GetButton("Fire1"))
@@ -217,7 +218,8 @@ public class LaserController : MonoBehaviour
                     }
                 }             
         }
-            
+          
+                   
         }
         else
         {
@@ -247,7 +249,7 @@ public class LaserController : MonoBehaviour
 
             objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
 
-            if (hit.rigidbody && objectParameters.canTorque)
+            if (hit.rigidbody && objectParameters.canTorque == true)
             {
                 if (Input.GetButton("Fire1"))
                 {
@@ -257,15 +259,7 @@ public class LaserController : MonoBehaviour
                 {
                     rb.AddRelativeTorque(-Vector3.up * torqueForce);
                 }
-                //else if (Input.GetButton("Fire1") && Input.GetButton("Shift"))
-                //{
-                //    rb.AddRelativeTorque(Vector3.right * laserForce);
-                //}
-                //else if (Input.GetButton("Fire2") && Input.GetButton("Shift"))
-                //{
-                //    rb.AddRelativeTorque(-Vector3.right * laserForce);
-                //}
-
+               
             }
         }
         else
@@ -296,7 +290,7 @@ public class LaserController : MonoBehaviour
 
             objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
 
-            if (hit.rigidbody && !jointedObject && objectParameters.canGravity)
+            while (hit.rigidbody && !jointedObject && objectParameters.canGravity == true)
             {
                 Vector3 lastHit = hit.point;
 
@@ -389,6 +383,26 @@ public class LaserController : MonoBehaviour
                 jointedObject = null;
             }
         }
+     }
 
+   public void LaserEnabler()
+    {
+
+        if (weaponSelectUI.kineticEnabled == true)
+        {
+            kineticActive = true;
+        }
+        if (weaponSelectUI.massEnabled == true)
+        {
+            massActive = true;
+        }
+        if (weaponSelectUI.torqueEnabled == true)
+        {
+            torqueActive = true;
+        }
+        if (weaponSelectUI.gravityEnabled == true)
+        {
+            gravityActive = true;
+        }
     }
 }

@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Shootable
+  - NotDestructable
+  - WorldController
+  - GunController
   layers:
   - Default
   - TransparentFX
