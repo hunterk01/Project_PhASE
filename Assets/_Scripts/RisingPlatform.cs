@@ -11,6 +11,8 @@ public class RisingPlatform : MonoBehaviour
     public Vector3 upPosition;
     public Vector3 downPosition;
 
+    public float angVel;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -25,6 +27,8 @@ public class RisingPlatform : MonoBehaviour
 
     void MovePlatform()
     {
+        angVel = rb.angularVelocity.y;
+
         if (rb.angularVelocity.y < 0)
         {
             if (transform.position.y < platformTop)
