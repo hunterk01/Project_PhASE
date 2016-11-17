@@ -33,7 +33,7 @@ public class LaserController : MonoBehaviour
     public float jointBreakForce = 1;
     public float springForce = 1;
     ObjectParameters objectParameters;
-    InfoPanelControl infoPanelControl;
+    public WeaponSelectUI weaponSelectUI;
 
     // Use this for initialization
     void Start()
@@ -44,7 +44,7 @@ public class LaserController : MonoBehaviour
         gameObject.GetComponent<Light>().enabled = false;
         ps = gameObject.GetComponent<ParticleSystem>();
         light = gameObject.GetComponent<Light>();
-        infoPanelControl = GameObject.Find("InfoPanel").GetComponent<InfoPanelControl>();
+        weaponSelectUI = GameObject.FindWithTag("GunController").GetComponent<WeaponSelectUI>();
         
         em = ps.emission;
         em.enabled = false;
@@ -56,6 +56,7 @@ public class LaserController : MonoBehaviour
     {
         FireLaser();
         GunSelection();
+        LaserEnabler();
     }
 
     void FireGun()
@@ -389,6 +390,26 @@ public class LaserController : MonoBehaviour
                 jointedObject = null;
             }
         }
+     }
 
+   public void LaserEnabler()
+    {
+
+        if (weaponSelectUI.kineticEnabled == true)
+        {
+            kineticActive = true;
+        }
+        if (weaponSelectUI.massEnabled == true)
+        {
+            massActive = true;
+        }
+        if (weaponSelectUI.torqueEnabled == true)
+        {
+            torqueActive = true;
+        }
+        if (weaponSelectUI.gravityEnabled == true)
+        {
+            gravityActive = true;
+        }
     }
 }
