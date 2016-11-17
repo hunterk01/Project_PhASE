@@ -110,6 +110,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             return q;
         }
-
+        
     }
 }

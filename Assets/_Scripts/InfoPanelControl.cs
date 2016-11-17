@@ -11,22 +11,22 @@ public class InfoPanelControl : MonoBehaviour
     public GameObject weaponPanel;
     public Text infoPanelText;
 
+    public bool enableKinetic = true;
     public bool enableMass = false;
     public bool enableTorque = false;
     public bool enableGravity = false;
-    public bool enableKinetic = true;
-
+    
     private int dialogCount = 0;
     private bool isTriggered = false;
     private bool infoCompleted = false;
 
     WeaponSelectUI weaponUI;
-    	
+     	
     void Start()
     {
         infoPanel.SetActive(false);
 
-        weaponUI = weaponPanel.GetComponent<WeaponSelectUI>();
+        weaponUI = weaponPanel.GetComponent<WeaponSelectUI>();     
     }
 
 	void Update ()
@@ -41,6 +41,7 @@ public class InfoPanelControl : MonoBehaviour
         gameObject.GetComponent<Collider>().enabled = false;
 
         EnableBeams();
+        
     }
 
     void DisplayInfo()
@@ -67,9 +68,11 @@ public class InfoPanelControl : MonoBehaviour
 
     void EnableBeams()
     {
-        if (enableMass)
+        if (enableMass)       
             weaponPanel.GetComponent<WeaponSelectUI>().massEnabled = true;
         if (enableTorque)   weaponUI.torqueEnabled = true;
         if (enableGravity)  weaponUI.gravityEnabled = true;
     }
+
+  
 }
