@@ -173,50 +173,52 @@ public class LaserController : MonoBehaviour
 
             if (hit.transform.tag == "Shootable")
             {
+                Debug.Log(hit.transform.tag + " 1 " + hit.collider.gameObject.name);
                 objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
                 objectParameters.currentScalePercentage = (hit.transform.localScale.y / objectParameters.maxScale) * 100;
-            }
-            if (hit.rigidbody && objectParameters.canMass == true)
-            {
-                
-                if (Input.GetButton("Fire1"))
-                {
 
-                    objectParameters.currentScalePercentage = objectParameters.currentScalePercentage + 0.2f;
+                if (hit.rigidbody && objectParameters.canMass == true)
+                {
+                    Debug.Log(hit.transform.tag + " 2 " + hit.collider.gameObject.name);
+                    if (Input.GetButton("Fire1"))
+                    {
+
+                        objectParameters.currentScalePercentage = objectParameters.currentScalePercentage + 0.2f;
                         scale = (objectParameters.currentScalePercentage / 100) * objectParameters.maxScale;
                         objectParameters.currentMassPercentage = objectParameters.currentScalePercentage;
 
                         hit.transform.localScale = new Vector3(scale, scale, scale);
-                      
+
                         hit.rigidbody.mass = (objectParameters.currentMassPercentage / 100) * objectParameters.maxMass;
 
-                    if (hit.transform.localScale.y >= objectParameters.maxScale)
-                    {
-                        objectParameters.currentScalePercentage = 100;
-                        hit.rigidbody.mass = objectParameters.maxMass;
-                        scale = objectParameters.maxScale;
-                        hit.transform.localScale = new Vector3(scale, scale, scale);
+                        if (hit.transform.localScale.y >= objectParameters.maxScale)
+                        {
+                            objectParameters.currentScalePercentage = 100;
+                            hit.rigidbody.mass = objectParameters.maxMass;
+                            scale = objectParameters.maxScale;
+                            hit.transform.localScale = new Vector3(scale, scale, scale);
+                        }
                     }
-                }
-                   
-                            else if (Input.GetButton("Fire2"))
-                {                
+
+                    else if (Input.GetButton("Fire2"))
+                    {
                         objectParameters.currentScalePercentage = objectParameters.currentScalePercentage - 0.2f;
                         scale = (objectParameters.currentScalePercentage / 100) * objectParameters.maxScale;
                         objectParameters.currentMassPercentage = objectParameters.currentScalePercentage;
-                     
+
                         hit.transform.localScale = new Vector3(scale, scale, scale);
-                     
+
                         hit.rigidbody.mass = (objectParameters.currentMassPercentage / 100) * objectParameters.maxMass;
 
-                    if (hit.transform.localScale.y <= objectParameters.minScale)
-                    {
-                        objectParameters.currentScalePercentage = (objectParameters.minScale / objectParameters.maxScale) * 100;
-                        scale = objectParameters.minScale;
-                        hit.transform.localScale = new Vector3(scale, scale, scale);
-                        hit.rigidbody.mass = objectParameters.minMass;
+                        if (hit.transform.localScale.y <= objectParameters.minScale)
+                        {
+                            objectParameters.currentScalePercentage = (objectParameters.minScale / objectParameters.maxScale) * 100;
+                            scale = objectParameters.minScale;
+                            hit.transform.localScale = new Vector3(scale, scale, scale);
+                            hit.rigidbody.mass = objectParameters.minMass;
+                        }
                     }
-                }             
+                }         
         }
           
                    
