@@ -130,7 +130,7 @@ public class LaserController : MonoBehaviour
 
             objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
          
-            if (hit.rigidbody && objectParameters.canKinetic)
+            if (hit.rigidbody && objectParameters.canKinetic == true)
             {
                 if (Input.GetButton("Fire1"))
                 {
@@ -176,7 +176,7 @@ public class LaserController : MonoBehaviour
                 objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
                 objectParameters.currentScalePercentage = (hit.transform.localScale.y / objectParameters.maxScale) * 100;
             }
-            if (hit.rigidbody && objectParameters.canMass)
+            if (hit.rigidbody && objectParameters.canMass == true)
             {
                 
                 if (Input.GetButton("Fire1"))
@@ -218,7 +218,8 @@ public class LaserController : MonoBehaviour
                     }
                 }             
         }
-            
+          
+                   
         }
         else
         {
@@ -248,7 +249,7 @@ public class LaserController : MonoBehaviour
 
             objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
 
-            if (hit.rigidbody && objectParameters.canTorque)
+            if (hit.rigidbody && objectParameters.canTorque == true)
             {
                 if (Input.GetButton("Fire1"))
                 {
@@ -258,15 +259,7 @@ public class LaserController : MonoBehaviour
                 {
                     rb.AddRelativeTorque(-Vector3.up * torqueForce);
                 }
-                //else if (Input.GetButton("Fire1") && Input.GetButton("Shift"))
-                //{
-                //    rb.AddRelativeTorque(Vector3.right * laserForce);
-                //}
-                //else if (Input.GetButton("Fire2") && Input.GetButton("Shift"))
-                //{
-                //    rb.AddRelativeTorque(-Vector3.right * laserForce);
-                //}
-
+               
             }
         }
         else
@@ -297,7 +290,7 @@ public class LaserController : MonoBehaviour
 
             objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
 
-            if (hit.rigidbody && !jointedObject && objectParameters.canGravity)
+            while (hit.rigidbody && !jointedObject && objectParameters.canGravity == true)
             {
                 Vector3 lastHit = hit.point;
 
