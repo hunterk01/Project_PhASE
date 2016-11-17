@@ -9,6 +9,8 @@ public class ObjectParameters : MonoBehaviour
     public bool canTorque = false;
     public bool canGravity = false;
 
+    public bool noScale = false;
+
     public float minMass;
     public float maxMass;
     public float minScale;
@@ -21,7 +23,8 @@ public class ObjectParameters : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        MassScaler();
+
+        if (!noScale)   MassScaler();
     }
 
     void MassScaler()
