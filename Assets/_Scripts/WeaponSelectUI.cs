@@ -22,7 +22,6 @@ public class WeaponSelectUI : MonoBehaviour
     public int activeWeapon = 1;
 
     private Color disabledColor = Color.gray;
-    private Color enabledColor = Color.green;
 
     void Start()
     {
@@ -31,7 +30,7 @@ public class WeaponSelectUI : MonoBehaviour
         torqueText = torqueUI.GetComponentInChildren<Text>();
         gravityText = gravityUI.GetComponentInChildren<Text>();
 
-        kineticText.color = enabledColor;
+        kineticText.color = Color.green;
         massText.color = disabledColor;
         torqueText.color = disabledColor;
         gravityText.color = disabledColor;
@@ -71,7 +70,7 @@ public class WeaponSelectUI : MonoBehaviour
     {
         if (activeWeapon == 1)
         {
-            kineticText.color = enabledColor;
+            kineticText.color = Color.green;
             massText.color = disabledColor;
             torqueText.color = disabledColor;
             gravityText.color = disabledColor;
@@ -79,7 +78,7 @@ public class WeaponSelectUI : MonoBehaviour
         else if (activeWeapon == 2)
         {
             kineticText.color = disabledColor;
-            massText.color = enabledColor;
+            massText.color = Color.red;
             torqueText.color = disabledColor;
             gravityText.color = disabledColor;
         }
@@ -87,7 +86,7 @@ public class WeaponSelectUI : MonoBehaviour
         {
             kineticText.color = disabledColor;
             massText.color = disabledColor;
-            torqueText.color = enabledColor;
+            torqueText.color = Color.yellow;
             gravityText.color = disabledColor;
         }
         else if (activeWeapon == 4)
@@ -95,7 +94,7 @@ public class WeaponSelectUI : MonoBehaviour
             kineticText.color = disabledColor;
             massText.color = disabledColor;
             torqueText.color = disabledColor;
-            gravityText.color = enabledColor;
+            gravityText.color = Color.blue;
         }
     }
 
