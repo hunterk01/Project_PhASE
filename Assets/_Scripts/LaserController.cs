@@ -266,8 +266,7 @@ public class LaserController : MonoBehaviour
                 else if (Input.GetButton("Fire2"))
                 {
                     rb.AddRelativeTorque(-Vector3.up * torqueForce);
-                }
-               
+                }         
             }
         }
         else

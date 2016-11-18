@@ -13,6 +13,8 @@ public class RisingPlatform : MonoBehaviour
 
     public float angVel;
 
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -29,7 +31,7 @@ public class RisingPlatform : MonoBehaviour
     {
         angVel = rb.angularVelocity.y;
 
-        if (rb.angularVelocity.y < 0)
+        if (rb.angularVelocity.y < 0 && Input.GetMouseButton(1))
         {
             if (transform.position.y < platformTop)
             {
@@ -41,7 +43,7 @@ public class RisingPlatform : MonoBehaviour
                 rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
             }
         }
-        else if (rb.angularVelocity.y > 0)
+        else if (rb.angularVelocity.y > 0 && Input.GetMouseButton(0))
         {
             if (transform.position.y > platformBottom)
             {

@@ -9,6 +9,7 @@ TagManager:
   - WorldController
   - GunController
   - NoTorque
+  - Platform
   layers:
   - Default
   - TransparentFX
