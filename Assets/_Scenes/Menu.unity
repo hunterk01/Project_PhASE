@@ -668,7 +668,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 503.6, y: 202.5}
-  m_SizeDelta: {x: 800, y: 600}
+  m_SizeDelta: {x: 800, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1312193983
 MonoBehaviour:
@@ -970,6 +970,7 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11490984, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
+    - {fileID: 6561536, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 29e34443bb940b444844db03df71bfd9, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1903543711

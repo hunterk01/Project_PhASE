@@ -34,6 +34,7 @@ public class LaserController : MonoBehaviour
     public float springForce = 1;
     ObjectParameters objectParameters;
     public WeaponSelectUI weaponSelectUI;
+    public PauseGame pauseGame;
 
     // Use this for initialization
     void Start()
@@ -57,6 +58,11 @@ public class LaserController : MonoBehaviour
         FireLaser();
         GunSelection();
         LaserEnabler();
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            pauseGame.pause();
+        }
     }
 
     void FireGun()
