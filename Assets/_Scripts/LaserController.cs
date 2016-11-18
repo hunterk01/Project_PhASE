@@ -11,14 +11,20 @@ public class LaserController : MonoBehaviour
     Renderer renderer;
     ParticleSystem ps;
     ParticleSystem.EmissionModule em;
+
     public int gun = 1;
     public float mass = 0.01f;
-    public float scale = 0.005f;
+    public float scale;
     public float scaleMin = 0.5f;
     public float scaleMax = 3.5f;
     public float massMin = 1;
-    public float massMax = 30;
+    public float massMax = 30;    
     public Vector3 tractorForce = new Vector3(1,1,1);
+    public bool kineticActive = true;
+    public bool massActive = false;
+    public bool torqueActive = false;
+    public bool gravityActive = false;
+
     public Light light;
     float distance;
     Transform jointedObject;
@@ -26,7 +32,10 @@ public class LaserController : MonoBehaviour
     SpringJoint springyJoint;
     public float jointBreakForce = 1;
     public float springForce = 1;
-    //public Rigidbody player;
+    ObjectParameters objectParameters;
+    public WeaponSelectUI weaponSelectUI;
+    public PauseGame pauseGame;
+
     // Use this for initialization
     void Start()
     {
@@ -36,7 +45,8 @@ public class LaserController : MonoBehaviour
         gameObject.GetComponent<Light>().enabled = false;
         ps = gameObject.GetComponent<ParticleSystem>();
         light = gameObject.GetComponent<Light>();
-        //player = gameObject.GetComponent<Rigidbody>();
+        weaponSelectUI = GameObject.FindWithTag("GunController").GetComponent<WeaponSelectUI>();
+        
         em = ps.emission;
         em.enabled = false;
 
@@ -47,47 +57,62 @@ public class LaserController : MonoBehaviour
     {
         FireLaser();
         GunSelection();
+        LaserEnabler();
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            pauseGame.pause();
+        }
     }
 
     void FireGun()
     {
         switch (gun)
         {
-            case 5:
-                GrappleBeam();
-                ;
+            //case 5:
+                //GrappleBeam();
+                //;
+                //break;
+            case 4:               
+                    GravityBeam();                              
                 break;
-            case 4:
-                GravityBeam();
-                ;
+            case 3:              
+                    TorqueBeam();                    
                 break;
-            case 3:
-                TorqueBeam();
-                ;
+            case 2:               
+                    MassBeam();                          
                 break;
-            case 2:
-                MassBeam();
-                ;
+            case 1:            
+                    KineticBeam();                
                 break;
-            case 1:
-                KineticBeam();
-                break;
-
         }
     }
 
     void GunSelection()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            gun = 1;
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            gun = 2;
-        else if(Input.GetKeyDown(KeyCode.Alpha3))
-            gun = 3;
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-            gun = 4;
-        else if(Input.GetKeyDown(KeyCode.Alpha5))
-            gun = 5;
+        if (Input.GetKeyDown(KeyCode.Alpha1) && kineticActive == true)
+        {        
+                gun = 1;
+        }
+
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && massActive == true)
+        {
+            
+                gun = 2;
+        }
+
+        else if (Input.GetKeyDown(KeyCode.Alpha3) && torqueActive == true)
+        {           
+                gun = 3;
+        }
+
+        else if (Input.GetKeyDown(KeyCode.Alpha4) && gravityActive == true)
+        {
+                gun = 4;
+        }
+
+       // else if (Input.GetKeyDown(KeyCode.Alpha5))
+            //gun = 5;
     }
 
     void KineticBeam()
@@ -108,7 +133,10 @@ public class LaserController : MonoBehaviour
             ps.startLifetime = distance;
             ps.startColor = Color.green;
             light.color = Color.green;
-            if (hit.rigidbody)
+
+            objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
+         
+            if (hit.rigidbody && objectParameters.canKinetic == true)
             {
                 if (Input.GetButton("Fire1"))
                 {
@@ -136,45 +164,70 @@ public class LaserController : MonoBehaviour
 
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
-
+        
 
         line.SetPosition(0, ray.origin);
-
+        
         if (Physics.Raycast(ray, out hit, laserMaxDistance))
         {
-            Vector3 scaleGovMax = new Vector3(scaleMax, scaleMax, scaleMax);
-            Vector3 scaleGovMin = new Vector3(scaleMin, scaleMin, scaleMin);
-
+           
             line.SetPosition(1, hit.point);
             distance = (hit.point - ray.origin).magnitude;
             ps.startLifetime = distance;
             ps.startColor = Color.red;
             light.color = Color.red;
-            if (hit.rigidbody)
+
+            if (hit.transform.tag == "Shootable")
             {
-                if (Input.GetButton("Fire1"))
+                Debug.Log(hit.transform.tag + " 1 " + hit.collider.gameObject.name);
+                objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
+                objectParameters.currentScalePercentage = (hit.transform.localScale.y / objectParameters.maxScale) * 100;
+
+                if (hit.rigidbody && objectParameters.canMass == true)
                 {
-                    hit.rigidbody.mass += mass;
-                    hit.transform.localScale += new Vector3(scale, scale, scale);
-                    if (hit.rigidbody.mass > massMax)
-                        hit.rigidbody.mass = massMax;
+                    Debug.Log(hit.transform.tag + " 2 " + hit.collider.gameObject.name);
+                    if (Input.GetButton("Fire1"))
+                    {
 
-                    if (hit.transform.localScale.y > scaleMax)
-                        hit.transform.localScale = scaleGovMax;
-                }
-                else if (Input.GetButton("Fire2"))
-                {
-                   hit.rigidbody.mass -= mass;
-                   hit.transform.localScale -= new Vector3(scale, scale, scale);
+                        objectParameters.currentScalePercentage = objectParameters.currentScalePercentage + 0.2f;
+                        scale = (objectParameters.currentScalePercentage / 100) * objectParameters.maxScale;
+                        objectParameters.currentMassPercentage = objectParameters.currentScalePercentage;
 
-                    if (hit.rigidbody.mass < massMin)
-                        hit.rigidbody.mass = massMin;
+                        hit.transform.localScale = new Vector3(scale, scale, scale);
 
-                    if (hit.transform.localScale.y < scaleMin)
-                    hit.transform.localScale = scaleGovMin;
-                }
+                        hit.rigidbody.mass = (objectParameters.currentMassPercentage / 100) * objectParameters.maxMass;
 
-            }
+                        if (hit.transform.localScale.y >= objectParameters.maxScale)
+                        {
+                            objectParameters.currentScalePercentage = 100;
+                            hit.rigidbody.mass = objectParameters.maxMass;
+                            scale = objectParameters.maxScale;
+                            hit.transform.localScale = new Vector3(scale, scale, scale);
+                        }
+                    }
+
+                    else if (Input.GetButton("Fire2"))
+                    {
+                        objectParameters.currentScalePercentage = objectParameters.currentScalePercentage - 0.2f;
+                        scale = (objectParameters.currentScalePercentage / 100) * objectParameters.maxScale;
+                        objectParameters.currentMassPercentage = objectParameters.currentScalePercentage;
+
+                        hit.transform.localScale = new Vector3(scale, scale, scale);
+
+                        hit.rigidbody.mass = (objectParameters.currentMassPercentage / 100) * objectParameters.maxMass;
+
+                        if (hit.transform.localScale.y <= objectParameters.minScale)
+                        {
+                            objectParameters.currentScalePercentage = (objectParameters.minScale / objectParameters.maxScale) * 100;
+                            scale = objectParameters.minScale;
+                            hit.transform.localScale = new Vector3(scale, scale, scale);
+                            hit.rigidbody.mass = objectParameters.minMass;
+                        }
+                    }
+                }         
+        }
+          
+                   
         }
         else
         {
@@ -202,7 +255,9 @@ public class LaserController : MonoBehaviour
             ps.startColor = Color.yellow;
             light.color = Color.yellow;
 
-            if (hit.rigidbody)
+            objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
+
+            if (hit.rigidbody && objectParameters.canTorque == true)
             {
                 if (Input.GetButton("Fire1"))
                 {
@@ -211,16 +266,7 @@ public class LaserController : MonoBehaviour
                 else if (Input.GetButton("Fire2"))
                 {
                     rb.AddRelativeTorque(-Vector3.up * torqueForce);
-                }
-                //else if (Input.GetButton("Fire1") && Input.GetButton("Shift"))
-                //{
-                //    rb.AddRelativeTorque(Vector3.right * laserForce);
-                //}
-                //else if (Input.GetButton("Fire2") && Input.GetButton("Shift"))
-                //{
-                //    rb.AddRelativeTorque(-Vector3.right * laserForce);
-                //}
-
+                }         
             }
         }
         else
@@ -249,7 +295,9 @@ public class LaserController : MonoBehaviour
             ps.startColor = Color.blue;
             light.color = Color.blue;
 
-            if (hit.rigidbody && !jointedObject)
+            objectParameters = hit.collider.gameObject.GetComponent<ObjectParameters>();
+
+            while (hit.rigidbody && !jointedObject && objectParameters.canGravity == true)
             {
                 Vector3 lastHit = hit.point;
 
@@ -275,44 +323,44 @@ public class LaserController : MonoBehaviour
 
     }
 
-    void GrappleBeam()
-    {
-        renderer.material.mainTextureOffset = new Vector2(0, Time.time);
+    //void GrappleBeam()
+    //{
+    //    renderer.material.mainTextureOffset = new Vector2(0, Time.time);
 
-        Ray ray = new Ray(transform.position, transform.forward);
-        RaycastHit hit;
+    //    Ray ray = new Ray(transform.position, transform.forward);
+    //    RaycastHit hit;
 
 
-        line.SetPosition(0, ray.origin);
+    //    line.SetPosition(0, ray.origin);
    
 
-        if (Physics.Raycast(ray, out hit, laserMaxDistance))
-        {
-            Rigidbody rb = hit.rigidbody;
-            line.SetPosition(1, hit.point);
-            distance = (hit.point - ray.origin).magnitude;
-            ps.startLifetime = distance / 2;
+    //    if (Physics.Raycast(ray, out hit, laserMaxDistance))
+    //    {
+    //        Rigidbody rb = hit.rigidbody;
+    //        line.SetPosition(1, hit.point);
+    //        distance = (hit.point - ray.origin).magnitude;
+    //        ps.startLifetime = distance / 2;
 
-            if (hit.rigidbody)
-            {
-                if (Input.GetButton("Fire1"))
-                {
+    //        if (hit.rigidbody)
+    //        {
+    //            if (Input.GetButton("Fire1"))
+    //            {
 
-                     //player.AddForce(transform.forward * kineticForce, ForceMode.Acceleration);
+    //                 //player.AddForce(transform.forward * kineticForce, ForceMode.Acceleration);
                     
-                }
-                else if (Input.GetButton("Fire2"))
-                {
+    //            }
+    //            else if (Input.GetButton("Fire2"))
+    //            {
                    
-                }
+    //            }
 
-            }
-        }
-        else
-        {
-            line.SetPosition(1, ray.GetPoint(laserMaxDistance));
-        }
-    }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        line.SetPosition(1, ray.GetPoint(laserMaxDistance));
+    //    }
+    //}
 
     void FireLaser()
     {
@@ -342,6 +390,26 @@ public class LaserController : MonoBehaviour
                 jointedObject = null;
             }
         }
+     }
 
+   public void LaserEnabler()
+    {
+
+        if (weaponSelectUI.kineticEnabled == true)
+        {
+            kineticActive = true;
+        }
+        if (weaponSelectUI.massEnabled == true)
+        {
+            massActive = true;
+        }
+        if (weaponSelectUI.torqueEnabled == true)
+        {
+            torqueActive = true;
+        }
+        if (weaponSelectUI.gravityEnabled == true)
+        {
+            gravityActive = true;
+        }
     }
 }
